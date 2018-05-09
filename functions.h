@@ -34,10 +34,10 @@ List load_commands_from_file();
 int upload_commands_to_file(List);
 AptList load_apts_from_file();
 int  upload_apts_to_file(AptList);
-void get_an_apt(char*);
-void buy_an_apt(char*);
-void add_an_apt(char*);
-void delete_an_apt(char*);
+void get_an_apt(char* command);
+void buy_an_apt(char* command);
+void add_an_apt(char* command);
+void delete_an_apt(char* command);
 #define N 7
 
 #endif
