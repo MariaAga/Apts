@@ -4,7 +4,7 @@
 #include <assert.h> 
 #include <malloc.h>
 #include <time.h>
-#include "header.h"
+#include "functions.h"
 
 
 /*char str[26];
