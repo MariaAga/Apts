@@ -11,13 +11,6 @@ typedef struct apt {
 	short int month;
 	short int year;
 	struct apt* next;
-	/*OPTION B:
-	struct apt* next_id;
-	struct apt* next_rooms;
-	struct apt* next_date;
-	struct apt* next_address;
-	struct apt* next price;
-	*/
 	struct apt* prev;
 }Apt;
 
