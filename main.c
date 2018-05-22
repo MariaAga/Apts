@@ -22,6 +22,7 @@ int main()
 	List old_commands;
 	ListNode* node;
 	ListNode* curr;
+	AptList* apt_list;
 	int index_history=0;
 	int i,j;
 	char* add = "add-an-apt"; char* get = "get-an-apt"; char* buy = "buy-an-apt"; char* delete_command = "delete-an-apt";
@@ -40,22 +41,22 @@ int main()
 	while (command != "exit") {
 
 		if (strstr(command, get) != NULL) {
-			get_an_apt(strstr(command, get)+sizeof(get));
+			get_an_apt(apt_list,strstr(command, get)+sizeof(get));
 			shift_command(short_term_history, command, index_history, &old_commands);
 			fgets(command, sizeof(command), stdin);
 		}
 		else if (strstr(command, add) != NULL) {
-			add_an_apt(strstr(command,add) + sizeof(add));
+			add_an_apt(apt_list,strstr(command,add) + sizeof(add));
 			shift_command(short_term_history, command, index_history, &old_commands);
 			fgets(command, sizeof(command), stdin);
 		}
 		else if (strstr(command, buy) != NULL) {
-			buy_an_apt(strstr(command, buy) + sizeof(buy));
+			buy_an_apt(apt_list,strstr(command, buy) + sizeof(buy));
 			shift_command(short_term_history, command, index_history, &old_commands);
 			fgets(command, sizeof(command), stdin);
 		}
 		else if (strstr(command,delete_command) != NULL) {
-			delete_an_apt(strstr(command, delete_command) + sizeof(delete_command));
+			delete_an_apt(apt_list,strstr(command, delete_command) + sizeof(delete_command));
 			shift_command(short_term_history, command, index_history, &old_commands);
 			fgets(command, sizeof(command), stdin);
 		}
