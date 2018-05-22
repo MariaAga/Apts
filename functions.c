@@ -55,3 +55,18 @@ void insertDataToEndList(List* head, char* data,int size)
 	result->data = (char*)malloc(sizeof(char)*size);
 	strcpy_s(result->data, sizeof(char)*size, data);
 }
+
+
+void shift_command(char *short_term_history[N], char* command,int index_history,List* old_commands) {
+	
+	index_history=(index_history+1)%8;
+	if (index_history >= N) { //cut the oldest command from the array to the linked list and update the history array with the new command
+		insertDataToEndList(old_commands, short_term_history[0], strlen(short_term_history[0]));
+		index_history--;
+	}
+	for (int i = 1; i < N - 1; i++) { //shift the shrt history array
+		strcpy_s(short_term_history[i] ,COMMAND,short_term_history[i+1]);
+	}
+	strcpy_s(short_term_history[index_history], COMMAND, command);
+	short_term_history[0] = "";
+}

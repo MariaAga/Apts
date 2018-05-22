@@ -51,5 +51,7 @@ void delete_an_apt(char* command);
 
 void insertDataToEndList(List* head, char* data, int size);
 void freeList(List* lst);
+void shift_command(char *short_term_history[N], char* command, int index_history, List* old_commands);
+
 
 #endif

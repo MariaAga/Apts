@@ -13,26 +13,17 @@ void get_time(char s[26]){
 	strcpy_s(s,26, str);
 }
 
-void shift_command(char *short_term_history[N], char* command,int index_history,List* old_commands) {
-	strcpy_s(short_term_history[index_history] , COMMAND, command);
-	index_history++;
-	if (index_history >= N) { //cut the oldest command from the array to the linked list and update the history array with the new command
-		insertDataToEndList(old_commands, short_term_history[N - 1], strlen(short_term_history[N - 1]));
-	}
-	for (int i = 0; i < N - 1; i++) { //shift the shrt history array
-		strcpy_s(short_term_history[i + 1] ,COMMAND,short_term_history[i]);
-	}
-	short_term_history[0] = "";
-}
+
 
 int main()
 {
-	char *short_term_history[N]; //array of strings
+	char *short_term_history[N];
 	char command[COMMAND];
 	List old_commands;
 	ListNode* node;
+	ListNode* curr;
 	int index_history=0;
-	int i;
+	int i,j;
 	char* add = "add-an-apt"; char* get = "get-an-apt"; char* buy = "buy-an-apt"; char* delete_command = "delete-an-apt";
 	for (i = 0; i < N; i++) { // init the short term history
 		short_term_history[i] = (char*)malloc(sizeof(char) * COMMAND);
@@ -50,28 +41,50 @@ int main()
 
 		if (strstr(command, get) != NULL) {
 			get_an_apt(strstr(command, get)+sizeof(get));
+			shift_command(short_term_history, command, index_history, &old_commands);
 			fgets(command, sizeof(command), stdin);
 		}
 		else if (strstr(command, add) != NULL) {
 			add_an_apt(strstr(command,add) + sizeof(add));
+			shift_command(short_term_history, command, index_history, &old_commands);
 			fgets(command, sizeof(command), stdin);
 		}
 		else if (strstr(command, buy) != NULL) {
 			buy_an_apt(strstr(command, buy) + sizeof(buy));
+			shift_command(short_term_history, command, index_history, &old_commands);
 			fgets(command, sizeof(command), stdin);
 		}
 		else if (strstr(command,delete_command) != NULL) {
 			delete_an_apt(strstr(command, delete_command) + sizeof(delete_command));
+			shift_command(short_term_history, command, index_history, &old_commands);
 			fgets(command, sizeof(command), stdin);
 		}
-		else if (command== "!!") { //TODO show last command from short_term_history
-
+	
+		else if (command== "!!") { // run last command from short_term_history
+			printf("%s\n", short_term_history[0]);
+			strcpy_s(command, COMMAND, short_term_history[0]);
 		}
-		else if (command == "history") {//TODO show all short_term_history and all old_commands
-
+		else if (command == "history") {// show all short_term_history and all old_commands
+			i = 0;
+			curr = old_commands.head;
+			while (curr != NULL) {
+				i++;
+				printf("%d = %s\n", i, curr->data);
+			}
+			for ( j = 0; j < N; j++) {
+				if (strlen(short_term_history[j]) > 0) {
+					printf("%d - %s\n", (i + j), short_term_history[j]);
+				}
+				i++;
+			}
 		}
-		else if (command == "short_history") {//TODO show all short_term_history
-			
+		else if (command == "short_history") {// show all short_term_history
+
+			for (i = 0; i < N; i++) {
+				if (strlen(short_term_history[i]) > 0) {
+					printf("%d - %s\n", (i+1), short_term_history[i]);
+				}
+			}
 		}
 		else if (strstr(command, "!")!=NULL) {
 			if (strstr(command, "^") != NULL) {//TODO !num^str1^str2 action - run the num command and swap str1 with str2
@@ -82,7 +95,7 @@ int main()
 			}
 		}
 
-		shift_command(short_term_history, command, index_history, &old_commands);
+		
 	}
 	system("PAUSE");
 }
