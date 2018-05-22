@@ -47,7 +47,7 @@ void buy_an_apt(char* command);
 void add_an_apt(char* command);
 void delete_an_apt(char* command);
 #define N 7
-
+#define COMMAND 256
 
 void insertDataToEndList(List* head, char* data, int size);
 void freeList(List* lst);
