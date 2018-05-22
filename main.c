@@ -1,9 +1,5 @@
 //Maria Agaphonchev
-#include <stdio.h>
-#include <string.h>
-#include <assert.h> 
-#include <malloc.h>
-#include <time.h>
+
 #include "functions.h"
 
 
@@ -21,20 +17,26 @@ int main()
 	char *short_term_history[N];
 	char command[256];
 	List old_commands;
+	ListNode* node;
 	int index_history=0;
+	int i;
 	char* add = "add-an-apt"; char* get = "get-an-apt"; char* buy = "buy-an-apt"; char* delete_command = "delete-an-apt";
+	for (i = 0; i < N; i++) { // init the short term history
+		short_term_history[i] = "";
+	}
+	old_commands.head = old_commands.tail = NULL; //init the long term history
 	printf("Please enter one of the following commands:\n"
 	"add-an-apt, get-an-apt, buy-an-apt or delete-an-apt\n"
 	"For reconstruction commands, please enter :\n"
 	"!!, !num, history, short_history or !num^str1^str2\n"
 	"To exit, enter exit.\n");
 	fgets(command, sizeof(command), stdin);
-
+	
 	while (command != "exit") {
 		short_term_history[index_history] = command;
 		index_history++;
 		if (index_history >= N) { //TODO cut the oldest command from the array to the linked list and update the history array with the new command
-
+			insertDataToEndList(&old_commands, short_term_history[N - 1],strlen(short_term_history[N-1]));
 		}
 		if (strstr(command, get) != NULL) {
 			get_an_apt(strstr(command, get)+sizeof(get));

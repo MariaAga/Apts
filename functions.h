@@ -2,6 +2,13 @@
 #ifndef HEADER_FILE
 #define HEADER_FILE
 
+#include <stdio.h>
+#include <string.h>
+#include <assert.h> 
+#include <malloc.h>
+#include <time.h>
+#include "functions.h"
+
 typedef struct apt {
 	int id;
 	char* address;
@@ -21,6 +28,7 @@ typedef struct aptlist {
 
 typedef struct listNode {
 	char* data;
+	int size;
 	struct listNode* next;
 }ListNode;
 
@@ -39,5 +47,9 @@ void buy_an_apt(char* command);
 void add_an_apt(char* command);
 void delete_an_apt(char* command);
 #define N 7
+
+
+void insertDataToEndList(List* head, char* data, int size);
+void freeList(List* lst);
 
 #endif
