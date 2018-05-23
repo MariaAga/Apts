@@ -116,6 +116,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="functions.c" />
+    <ClCompile Include="get_an_apt.c" />
     <ClCompile Include="main.c" />
   </ItemGroup>
   <ItemGroup>

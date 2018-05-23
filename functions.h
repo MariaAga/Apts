@@ -7,7 +7,6 @@
 #include <assert.h> 
 #include <malloc.h>
 #include <time.h>
-#include "functions.h"
 
 typedef struct apt {
 	int id;
@@ -53,5 +52,7 @@ void insertDataToEndList(List* head, char* data, int size);
 void freeList(List* lst);
 void shift_command(char *short_term_history[N], char* command, int index_history, List* old_commands);
 
-
+void parse_command(char* command, int* max_price, int* min_num_room, int* max_num_room, struct tm* date);
+void filter_number_command(char*command, int* var, int command_len);
+void filter_date_command(char* command, struct tm* date, int command_len);
 #endif

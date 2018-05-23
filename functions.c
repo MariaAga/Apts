@@ -10,12 +10,6 @@ AptList load_apts_from_file()
 	//return AptList();
 }
 
-void get_an_apt(AptList* apt_list, char * command)
-{
-	int max_price = 0, min_num_room = 0, max_num_room;
-	char *max_price_command = "-MaximumPrice"; char *min_num_room_command = "-MinimumNumRooms"; char *max_num_room_command = "-MaximumNumRooms"; char *date_command = "-Date";
-	if (strstr(command, max_price_command) != NULL){}
-}
 
 void buy_an_apt(AptList* apt_list, char * command)
 {
