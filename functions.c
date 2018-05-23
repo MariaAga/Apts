@@ -66,3 +66,16 @@ void shift_command(char *short_term_history[N], char* command,int index_history,
 	strcpy_s(short_term_history[index_history], COMMAND, command);
 	short_term_history[0] = "";
 }
+
+void filter_number_command(char* command, int* var) {
+	int command_len = strlen(command);
+	if (command != NULL) {
+		*var = 0;
+		command = command + strlen(command_len) + 1;
+		int i = 0;
+		while (command[i] != ' ' && command[i] != NULL) {
+			*var = *var * 10 + atoi(command[i]);
+			i++;
+		}
+	}
+}

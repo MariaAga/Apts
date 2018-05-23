@@ -23,7 +23,8 @@ int main()
 	ListNode* node;
 	ListNode* curr;
 	AptList* apt_list;
-	int index_history=0;
+	int show_index = 0;
+	int index_history=0,total_commands=1;
 	int i,j;
 	char* add = "add-an-apt"; char* get = "get-an-apt"; char* buy = "buy-an-apt"; char* delete_command = "delete-an-apt";
 	for (i = 0; i < N; i++) { // init the short term history
@@ -44,21 +45,25 @@ int main()
 			get_an_apt(apt_list,strstr(command, get)+sizeof(get));
 			shift_command(short_term_history, command, index_history, &old_commands);
 			fgets(command, sizeof(command), stdin);
+			total_commands++;
 		}
 		else if (strstr(command, add) != NULL) {
 			add_an_apt(apt_list,strstr(command,add) + sizeof(add));
 			shift_command(short_term_history, command, index_history, &old_commands);
 			fgets(command, sizeof(command), stdin);
+			total_commands++;
 		}
 		else if (strstr(command, buy) != NULL) {
 			buy_an_apt(apt_list,strstr(command, buy) + sizeof(buy));
 			shift_command(short_term_history, command, index_history, &old_commands);
 			fgets(command, sizeof(command), stdin);
+			total_commands++;
 		}
 		else if (strstr(command,delete_command) != NULL) {
 			delete_an_apt(apt_list,strstr(command, delete_command) + sizeof(delete_command));
 			shift_command(short_term_history, command, index_history, &old_commands);
 			fgets(command, sizeof(command), stdin);
+			total_commands++;
 		}
 	
 		else if (command== "!!") { // run last command from short_term_history
@@ -92,7 +97,13 @@ int main()
 				
 			}
 			else { //TODO command is !num - show the num command
+				filter_number_command(command, &show_index, strlen(command));
+				if (total_commands - show_index<7) {
+					strcpy_s(command, COMMAND, short_term_history[total_commands - show_index]);
+				}
+				else {//TODO get from long history
 
+				}
 			}
 		}
 
