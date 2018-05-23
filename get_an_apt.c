@@ -7,11 +7,14 @@ void get_an_apt(AptList* apt_list, char * command)
 	int max_price = -1, min_num_room = 0, max_num_room = -1;
 	time_t raw_time = 0;
 	struct tm date; gmtime_s(&date, raw_time);
+	int show_days;
 	if (strstr(command, "-Enter") != NULL) {
-
+		filter_number_command(strstr(command, "-Enter"), &show_days, strlen("-Enter"));
+		get_recent_apts(apt_list, show_days);
 	}
 	else {
 		parse_command(command, &max_price, &min_num_room, &max_num_room, &date);
+		get_sorted_filtered_apt(apt_list, max_price, min_num_room, max_num_room, date);
 	}
 
 }
@@ -45,4 +48,21 @@ void filter_date_command(char* command, struct tm* date, int command_len) {
 		date->tm_mon = atoi(command[2] * 10) + atoi(command[3]);
 		date->tm_year = atoi(command[4] * 100)+ atoi(command[5] * 10) + atoi(command[3]) - 1900;
 	}
+}
+
+void show_recent_apts(AptList * apt_list, int show_days)
+{
+}
+
+
+void get_sorted_filtered_apt(AptList* apt_list, int max_price, int min_num_room, int max_num_room, struct tm date) {
+	AptNode* node = apt_list->head;
+	while (node != NULL) {
+		if ((node->apt->price < max_price || max_price < 0) && (node->apt->rooms > min_num_room) && (node->apt->rooms > max_num_room || max_num_room < 0)) {
+			printf("Apt details:\nCode : %d\nAddress : %s\n Number of rooms : %d\n",node->apt->id, node->apt->rooms);
+			printf("Entry date : %d.%d.%d\n", node->apt->entry_date.tm_mday, node->apt->entry_date.tm_mon, (node->apt->entry_date.tm_year + 1900));
+			printf("Database entry date : %d.%d.%d", node->apt->db_entry_date.tm_mday, node->apt->db_entry_date.tm_mon, (node->apt->db_entry_date.tm_year + 1900));
+	}
+
+
 }
