@@ -61,7 +61,7 @@ void insertDataToEndList(List* head, char* data, int size);
 void freeList(List* lst);
 void shift_command(char *short_term_history[N], char* command, int index_history, List* old_commands);
 void get_n_command(int show_index, List old_commands , char command [][COMMAND]);
-
+void edit_command(char command[][COMMAND], char prev_command[COMMAND]);
 
 void parse_command(char* command, int* max_price, int* min_num_room, int* max_num_room, struct tm* date);
 void filter_number_command(char*command, int* var);

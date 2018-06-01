@@ -96,6 +96,27 @@ void filter_number_command(char* command, int* var) {
 	}
 }
 
+void edit_command(char command[][COMMAND], char prev_command[COMMAND]) {//!num^str1^str2 action
+	char str1 [COMMAND];
+	char str2 [COMMAND];
+	char command_end[COMMAND];
+	char* change_point;
+	int command_len = strlen(*command), prev_command_len = strlen(prev_command);
+	int str1_len = 0 , str2_len = 0;
+	strcpy_s(str1,COMMAND,strstr(prev_command, "^"));
+	strcpy_s(str2, COMMAND, strstr(str1, "^"));
+	str2_len = strlen(str2);
+	str1_len = strlen(str1) - str2_len - 1;
+	strcpy_s(command_end, COMMAND, *command + str2_len + str1_len + 2);
+	change_point = strstr(*command, str1);
+	for (int i = 0; i < str2_len; i++) {
+		change_point[i] = str2[i];
+	}
+	change_point[str2_len] = '\0';
+	strcat_s(*command, COMMAND, command_end);
+}
+
 int char_to_int(char ch) {
 	return (int)(ch - '0');
 }
+

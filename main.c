@@ -18,7 +18,7 @@ void get_time(char s[26]){
 int main()
 {
 	char *short_term_history[N];
-	char command[COMMAND];
+	char command[COMMAND], prev_command[COMMAND];
 	List old_commands;
 	ListNode* node;
 	ListNode* curr;
@@ -93,11 +93,18 @@ int main()
 			}
 		}
 		else if (strstr(command, "!")!=NULL) {
+			filter_number_command(command, &show_index); 
 			if (strstr(command, "^") != NULL) {//TODO !num^str1^str2 action - run the num command and swap str1 with str2
-				
+				strcpy_s(prev_command, COMMAND, command);
+				if (total_commands - show_index<N) { //last command is in the short_term_hisoty
+					strcpy_s(command, COMMAND, short_term_history[total_commands - show_index]);
+				}
+				else {//last command is in the long history
+					get_n_command(show_index, old_commands, &command);
+				}
+				edit_command(&command,prev_command);
 			}
-			else { //TODO command is !num - show the num command
-				filter_number_command(command, &show_index);
+			else { //command is !num - show the num command
 				if (total_commands - show_index<7) { //last command is in the short_term_hisoty
 					strcpy_s(command, COMMAND, short_term_history[total_commands - show_index]);
 				}
