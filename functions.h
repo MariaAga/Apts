@@ -7,6 +7,7 @@
 #include <assert.h> 
 #include <malloc.h>
 #include <time.h>
+#include <stdlib.h> 
 
 #define N 7
 #define COMMAND 256
@@ -23,8 +24,8 @@ typedef struct apt {
 
 typedef struct apt_node {
 	Apt* apt;
-	struct apt* next;
-	struct apt* prev;
+	struct apt_node* next;
+	struct apt_node* prev;
 }AptNode;
 
 typedef struct aptlist {
@@ -59,6 +60,8 @@ void delete_an_apt(AptList* apt_list, char* command);
 void insertDataToEndList(List* head, char* data, int size);
 void freeList(List* lst);
 void shift_command(char *short_term_history[N], char* command, int index_history, List* old_commands);
+void get_n_command(int show_index, List old_commands , char command [][COMMAND]);
+
 
 void parse_command(char* command, int* max_price, int* min_num_room, int* max_num_room, struct tm* date);
 void filter_number_command(char*command, int* var);
@@ -66,4 +69,7 @@ void filter_date_command(char* command, struct tm* date);
 void show_recent_apts(AptList* apt_list , int show_days);
 void get_sorted_filtered_apt(AptList* apt_list, int max_price, int min_num_room, int max_num_room, struct tm date);
 void print_apt(AptNode node);
+
+
+int char_to_int(char ch);
 #endif

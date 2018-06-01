@@ -97,12 +97,12 @@ int main()
 				
 			}
 			else { //TODO command is !num - show the num command
-				filter_number_command(command, &show_index, strlen(command));
-				if (total_commands - show_index<7) {
+				filter_number_command(command, &show_index);
+				if (total_commands - show_index<7) { //last command is in the short_term_hisoty
 					strcpy_s(command, COMMAND, short_term_history[total_commands - show_index]);
 				}
-				else {//TODO get from long history
-
+				else {//last command is in the long history
+					get_n_command(show_index, old_commands, &command);
 				}
 			}
 		}

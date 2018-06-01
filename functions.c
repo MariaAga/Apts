@@ -67,15 +67,35 @@ void shift_command(char *short_term_history[N], char* command,int index_history,
 	short_term_history[0] = "";
 }
 
+void get_n_command(int show_index, List old_commands, char command[][COMMAND])
+{
+	ListNode* node = old_commands.head;
+	show_index -= 7;
+	while (show_index > 0 && node != NULL) {
+		show_index--;
+		node = node->next;
+	}
+	if (show_index == 0) {
+		strcpy_s(*command, COMMAND, node->data);
+	}
+	else {
+		printf("Error getting the %d command from old commands index\n", show_index);
+	}
+
+}
+
 void filter_number_command(char* command, int* var) {
 	int command_len = strlen(command);
+	int i = 0;
 	if (command != NULL) {
 		*var = 0;
-		command = command + strlen(command_len) + 1;
-		int i = 0;
-		while (command[i] != ' ' && command[i] != NULL) {
-			*var = *var * 10 + atoi(command[i]);
+		while (command[i] >= 9 && command[i] >= 0 && command[i] != '\0') {
+			*var = *var * 10 + char_to_int(command[i]);
 			i++;
 		}
 	}
+}
+
+int char_to_int(char ch) {
+	return (int)(ch - '0');
 }
