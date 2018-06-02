@@ -32,7 +32,26 @@ void buy_an_apt(AptList* apt_list, char * command)
 
 void delete_an_apt(AptList* apt_list, char * command)
 {
+	int show_days;
+	filter_number_command(strstr(command, "-Enter"), &show_days, strlen("-Enter"));
+	delete_recent_apts(apt_list, show_days);
+
 }
+
+void delete_recent_apts(AptList * apt_list, int show_days)
+{
+	AptNode* node = apt_list->head;
+	AptNode* next;
+	time_t curr_time = time(NULL);
+	while (node != NULL) {
+		next = node->next;
+		if (difftime(curr_time, mktime(&node->apt->db_entry_date)) <= (show_days * 86400)) { // there are 86400 sec in 1 day
+			free_apt_node(node);
+		}
+		node = next;
+	}
+}
+
 
 void freeList(List* lst)
 {

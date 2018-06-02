@@ -76,4 +76,7 @@ int char_to_int(char ch);
 
 void fill_apt_from_str(Apt* apt, char* str);
 void instert_apt_sorted(AptList* apt_list, AptNode* node);
+void free_apt_node(AptNode* node);
+
+void delete_recent_apts(AptList * apt_list, int show_days);
 #endif
