@@ -40,6 +40,9 @@ void number_from_string(char* str, int* num) {
 	int i = 0;
 	if (str != NULL) {
 		*num = 0;
+		while (str[i] == ' ') {
+			i++;
+		}
 		while (str[i] >= 9 && str[i] >= 0 && str[i] != '\0') {
 			*num = *num * 10 + char_to_int(str[i]);
 			i++;
@@ -86,3 +89,4 @@ void filter_date_command(char* command, struct tm* date, int command_len) {
 		date->tm_year = char_to_int(command[4]) * 100 + char_to_int(command[5]) * 10 + char_to_int(command[3]) - 1900;
 	}
 }
+

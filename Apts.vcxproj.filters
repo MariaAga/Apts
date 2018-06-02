@@ -27,6 +27,9 @@
     <ClCompile Include="commands.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="add_an_apt.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="functions.h">

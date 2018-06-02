@@ -31,7 +31,7 @@ typedef struct apt_node {
 typedef struct aptlist {
 	AptNode* head;
 	AptNode* tail;
-	int ammount;
+	int amount;
 }AptList;
 
 typedef struct listNode {
