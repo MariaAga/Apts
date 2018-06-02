@@ -4,7 +4,7 @@
 
 void get_an_apt(AptList* apt_list, char * command) //TODO: add -sr -s
 {
-	int max_price = -1, min_num_room = 0, max_num_room = -1;
+	int max_price = -1, min_num_room = 0, max_num_room = -1,sort=1;
 	time_t raw_time = 0;
 	struct tm date; gmtime_s(&date, &raw_time);
 	int show_days;
@@ -12,9 +12,15 @@ void get_an_apt(AptList* apt_list, char * command) //TODO: add -sr -s
 		filter_number_command(strstr(command, "-Enter"), &show_days, strlen("-Enter"));
 		show_recent_apts(apt_list, show_days);
 	}
-	else { //TODO: sort?
+	else { 
+		if (strstr(command, "-sr") != NULL) {
+			sort = 1;
+		}
+		else if (strstr(command, "-s") != NULL) {
+			sort = -1;
+		}
 		parse_command(command, &max_price, &min_num_room, &max_num_room, &date);
-		get_sorted_filtered_apt(apt_list, max_price, min_num_room, max_num_room, date);
+		get_sorted_filtered_apt(apt_list, max_price, min_num_room, max_num_room, date,sort);
 	}
 
 }
@@ -33,13 +39,20 @@ void show_recent_apts(AptList * apt_list, int show_days)
 
 
 
-void get_sorted_filtered_apt(AptList* apt_list, int max_price, int min_num_room, int max_num_room, struct tm date) {
-	AptNode* node = apt_list->head;
+void get_sorted_filtered_apt(AptList* apt_list, int max_price, int min_num_room, int max_num_room, struct tm date,int sort) {
+	AptNode* node;
+	if (sort == 1)
+		node = apt_list->head;
+	else
+		node = apt_list->tail;
 	while (node != NULL) {
 		if ((node->apt->price < max_price || max_price < 0) && (node->apt->rooms > min_num_room) && (node->apt->rooms > max_num_room || max_num_room < 0)) {
 			print_apt(*node);
 		}
-		node = node->next;
+		if (sort == 1)
+			node = node->next;
+		else
+			node = node->prev;
 	}
 }
 

@@ -1,17 +1,19 @@
 #include "functions.h"
 
-void shift_command(char *short_term_history[N], char* command, int index_history, List* old_commands) {
+void shift_command(char *short_term_history[N], char* command, int* index_history, List* old_commands) {
 
-	index_history = (index_history + 1) % 8;
-	if (index_history >= N) { //cut the oldest command from the array to the linked list and update the history array with the new command
+	*index_history = (*index_history + 1) % 8;
+	if (*index_history >= N) { //cut the oldest command from the array to the linked list and update the history array with the new command
 		insertDataToEndList(old_commands, short_term_history[0], strlen(short_term_history[0]));
-		index_history--;
+		*index_history=*index_history-1;
 	}
-	for (int i = 1; i < N - 1; i++) { //shift the shrt history array
-		strcpy_s(short_term_history[i], COMMAND, short_term_history[i + 1]);
+	if (*index_history > 1) {
+		for (int i = N - 1; i > 0; i--) { //shift the shrt history array left
+			memcpy(short_term_history[i], short_term_history[i - 1], COMMAND);
+		}
+
+		memcpy(short_term_history[0], command, COMMAND);
 	}
-	strcpy_s(short_term_history[index_history], COMMAND, command);
-	short_term_history[0] = "";
 }
 
 void get_n_command(int show_index, List old_commands, char command[][COMMAND])
@@ -43,7 +45,7 @@ void number_from_string(char* str, int* num) {
 		while (str[i] == ' ') {
 			i++;
 		}
-		while (str[i] >= 9 && str[i] >= 0 && str[i] != '\0') {
+		while (str[i] <= 9 && str[i] >= '0' && str[i] != '\0') {
 			*num = *num * 10 + char_to_int(str[i]);
 			i++;
 		}
@@ -57,17 +59,17 @@ void edit_command(char command[][COMMAND], char prev_command[COMMAND]) {//!num^s
 	char* change_point;
 	int command_len = strlen(*command), prev_command_len = strlen(prev_command);
 	int str1_len = 0, str2_len = 0;
-	strcpy_s(str1, COMMAND, (strstr(prev_command, "^")+1));
-	strcpy_s(str2, COMMAND, (strstr(str1, "^")+1));
+	strcpy_s(str1, COMMAND , (strstr(prev_command, "^")+1));
+	strcpy_s(str2, COMMAND , (strstr(str1, "^")+1));
 	str2_len = strlen(str2);
 	str1_len = strlen(str1) - str2_len - 1;
-	strcpy_s(command_end, COMMAND, *command + str2_len + str1_len + 2);
+	strcpy_s(command_end, COMMAND , *command + str2_len + str1_len + 2);
 	change_point = strstr(*command, str1);
 	for (int i = 0; i < str2_len; i++) {
 		change_point[i] = str2[i];
 	}
 	change_point[str2_len] = '\0';
-	strcat_s(*command, COMMAND, command_end);
+	strcat_s(*command, COMMAND-1, command_end);
 }
 
 

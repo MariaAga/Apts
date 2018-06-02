@@ -10,20 +10,20 @@ void add_an_apt(AptList* apt_list, char * command) //TODO: ALWAYS ADD SORTED BY 
 	char* command_part;
 
 	command = strstr(command, "\"") + 1;
-	command_part = strstr(command, "\"") + 1;
-	address_length = (command - command_part + 1) / sizeof(char);
+	command_part = strstr(command, "\"") ;
+	address_length = (command_part - command ) / sizeof(char);
 	apt->address_len = address_length;
 	apt->address = (char*)malloc(sizeof(char)*address_length + 1);
-	strncpy_s(apt->address, address_length, command, address_length);
+	strncpy_s(apt->address, address_length+1, command, address_length);
 	apt->address[address_length] = '\0';
-	fill_apt_from_str(apt, command_part);
+	fill_apt_from_str(apt, command_part+1);
 
 	node->apt = apt;
 	instert_apt_sorted(apt_list, node);
 
 }
 
-void instert_apt_sorted(AptList* apt_list, AptNode* node) {
+void instert_apt_sorted(AptList* apt_list, AptNode* node) {//TODO: FIX
 	AptNode* tmp;
 	node->next = NULL;
 	node->prev = NULL;
@@ -65,31 +65,34 @@ void fill_apt_from_str(Apt* apt, char* str) {
 	time_t curtime;
 	curtime = time(NULL);
 	localtime_s(&apt->db_entry_date, &curtime);
-
-	while (str[i] >= 9 && str[i] >= 0 && str[i] != '\0') {
+	apt->price = apt->rooms = apt->entry_date.tm_mday = apt->entry_date.tm_mon = apt->entry_date.tm_year = 0;
+	while (str[i] == ' ') { i++; }
+	while (str[i] <= '9' && str[i] >= '0' && str[i] != '\0') {
 		apt->price = apt->price * 10 + char_to_int(str[i]);
 		i++;
 	}
 	i++;
-	while (str[i] >= 9 && str[i] >= 0 && str[i] != '\0') {
+	while (str[i] <= '9' && str[i] >= '0' && str[i] != '\0') {
 		apt->rooms = apt->rooms * 10 + char_to_int(str[i]);
 		i++;
 	}
-	while (str[i] >= 9 && str[i] >= 0 && str[i] != '\0') {
+	i++;
+	while (str[i] <= '9' && str[i] >= '0' && str[i] != '\0') {
 		apt->entry_date.tm_mday = apt->entry_date.tm_mday * 10 + char_to_int(str[i]);
 		i++;
 	}
 	i++;
-	while (str[i] >= 9 && str[i] >= 0 && str[i] != '\0') {
+	while (str[i] <= '9' && str[i] >= '0' && str[i] != '\0') {
 		apt->entry_date.tm_mon = apt->entry_date.tm_mon * 10 + char_to_int(str[i]);
 		i++;
 	}
 	i++;
-	while (str[i] >= 9 && str[i] >= 0 && str[i] != '\0') {
+	while (str[i] <= '9' && str[i] >= '0' && str[i] != '\0') {
 		apt->entry_date.tm_year = apt->entry_date.tm_year * 10 + char_to_int(str[i]);
 		i++;
 	}
 	apt->entry_date.tm_year += 2000;
+	apt->entry_date.tm_year -= 1970;
 
 
 }

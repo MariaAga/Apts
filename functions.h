@@ -61,7 +61,7 @@ void delete_an_apt(AptList* apt_list, char* command);
 
 void insertDataToEndList(List* head, char* data, int size);
 void freeList(List* lst);
-void shift_command(char *short_term_history[N], char* command, int index_history, List* old_commands);
+void shift_command(char *short_term_history[N], char* command, int* index_history, List* old_commands);
 void get_n_command(int show_index, List old_commands , char command [][COMMAND]);
 void edit_command(char command[][COMMAND], char prev_command[COMMAND]);
 
@@ -69,7 +69,7 @@ void parse_command(char* command, int* max_price, int* min_num_room, int* max_nu
 void filter_number_command(char*command, int* var, int command_len);
 void filter_date_command(char* command, struct tm* date, int command_len);
 void show_recent_apts(AptList* apt_list , int show_days);
-void get_sorted_filtered_apt(AptList* apt_list, int max_price, int min_num_room, int max_num_room, struct tm date);
+void get_sorted_filtered_apt(AptList* apt_list, int max_price, int min_num_room, int max_num_room, struct tm date,int sort);
 void print_apt(AptNode node);
 
 void number_from_string(char* str, int* num);
@@ -80,4 +80,7 @@ void instert_apt_sorted(AptList* apt_list, AptNode* node);
 void free_apt_node(AptNode* node);
 
 void delete_recent_apts(AptList * apt_list, int show_days);
+
+void bits_to_file(FILE* file, Apt apt);
+void db_date_to_file(FILE* file, Apt apt);
 #endif
