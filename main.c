@@ -15,7 +15,7 @@ void get_time(char s[26]){
 
 
 
-int main()
+int main()//TODO create empty lists
 {
 	char *short_term_history[N];
 	char command[COMMAND], prev_command[COMMAND];

@@ -31,6 +31,7 @@ typedef struct apt_node {
 typedef struct aptlist {
 	AptNode* head;
 	AptNode* tail;
+	int ammount;
 }AptList;
 
 typedef struct listNode {
@@ -72,4 +73,7 @@ void print_apt(AptNode node);
 
 void number_from_string(char* str, int* num);
 int char_to_int(char ch);
+
+void fill_apt_from_str(Apt* apt, char* str);
+void instert_apt_sorted(AptList* apt_list, AptNode* node);
 #endif
