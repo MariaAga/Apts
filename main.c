@@ -93,8 +93,8 @@ int main()
 			}
 		}
 		else if (strstr(command, "!")!=NULL) {
-			filter_number_command(command, &show_index); 
-			if (strstr(command, "^") != NULL) {//TODO !num^str1^str2 action - run the num command and swap str1 with str2
+			filter_number_command(strstr(command, "!num"), &show_index,strlen("!num"));
+			if (strstr(command, "^") != NULL) {// !num^str1^str2 action - run the num command and swap str1 with str2
 				strcpy_s(prev_command, COMMAND, command);
 				if (total_commands - show_index<N) { //last command is in the short_term_hisoty
 					strcpy_s(command, COMMAND, short_term_history[total_commands - show_index]);

@@ -10,7 +10,7 @@
 #include <stdlib.h> 
 
 #define N 7
-#define COMMAND 256
+#define COMMAND 512
 
 typedef struct apt {
 	int id;
@@ -64,12 +64,12 @@ void get_n_command(int show_index, List old_commands , char command [][COMMAND])
 void edit_command(char command[][COMMAND], char prev_command[COMMAND]);
 
 void parse_command(char* command, int* max_price, int* min_num_room, int* max_num_room, struct tm* date);
-void filter_number_command(char*command, int* var);
-void filter_date_command(char* command, struct tm* date);
+void filter_number_command(char*command, int* var, int command_len);
+void filter_date_command(char* command, struct tm* date, int command_len);
 void show_recent_apts(AptList* apt_list , int show_days);
 void get_sorted_filtered_apt(AptList* apt_list, int max_price, int min_num_room, int max_num_room, struct tm date);
 void print_apt(AptNode node);
 
-
+void number_from_string(char* str, int* num);
 int char_to_int(char ch);
 #endif
