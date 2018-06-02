@@ -12,6 +12,7 @@ void add_an_apt(AptList* apt_list, char * command) //TODO: ALWAYS ADD SORTED BY 
 	command = strstr(command, "\"") + 1;
 	command_part = strstr(command, "\"") + 1;
 	address_length = (command - command_part + 1) / sizeof(char);
+	apt->address_len = address_length;
 	apt->address = (char*)malloc(sizeof(char)*address_length + 1);
 	strncpy_s(apt->address, address_length, command, address_length);
 	apt->address[address_length] = '\0';

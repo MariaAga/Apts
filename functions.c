@@ -1,8 +1,27 @@
 #include "functions.h"
 
+void upload_commands_to_file(List commands) {
+
+}
+
 List load_commands_from_file()
 {
 	//return List();
+}
+
+
+void upload_apts_to_file(AptList apts) {
+	AptNode* node = apts.head;
+	FILE* file;
+
+	file = fopen("apt.bin", "wb");
+	while (node != NULL) {
+		fwrite(node->apt->id, sizeof(short int), 1, file);
+		fwrite(node->apt->address_len, sizeof(short int), 1, file);
+		fwrite(node->apt->price, sizeof(int), 1, file);
+		bits_to_file(file, *node->apt);
+	}
+	free_apt_list(apts);
 }
 
 AptList load_apts_from_file()
@@ -10,6 +29,15 @@ AptList load_apts_from_file()
 	//return AptList();
 }
 
+void bits_to_file(FILE* file, Apt apt) {
+	/*byte[0] - rooms+ 4 bits from day, 
+	  byte[1] - 1 bit from days, 4 from month, 3 from year
+	  byte[2] - 4 from year, 4 zeros
+	*/
+	char byte[3]; 
+}
+
+int int_to_bits()
 
 void buy_an_apt(AptList* apt_list, char * command)
 {	

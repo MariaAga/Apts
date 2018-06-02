@@ -36,7 +36,7 @@ int main()//TODO create empty lists
 	"add-an-apt, get-an-apt, buy-an-apt or delete-an-apt\n"
 	"For reconstruction commands, please enter :\n"
 	"!!, !num, history, short_history or !num^str1^str2\n"
-	"To exit, enter exit.\n");
+	"To exit, enter exit.\n>> ");
 	fgets(command, sizeof(command), stdin);
 	strcpy_s(short_term_history[0], COMMAND, command);
 	while (command != "exit") {
@@ -44,24 +44,28 @@ int main()//TODO create empty lists
 		if (strstr(command, get) != NULL) {
 			get_an_apt(apt_list,strstr(command, get)+sizeof(get));
 			shift_command(short_term_history, command, index_history, &old_commands);
+			printf(">> ");
 			fgets(command, sizeof(command), stdin);
 			total_commands++;
 		}
 		else if (strstr(command, add) != NULL) {
 			add_an_apt(apt_list,strstr(command,add) + sizeof(add));
 			shift_command(short_term_history, command, index_history, &old_commands);
+			printf(">> ");
 			fgets(command, sizeof(command), stdin);
 			total_commands++;
 		}
 		else if (strstr(command, buy) != NULL) {
 			buy_an_apt(apt_list,strstr(command, buy) + sizeof(buy));
 			shift_command(short_term_history, command, index_history, &old_commands);
+			printf(">> ");
 			fgets(command, sizeof(command), stdin);
 			total_commands++;
 		}
 		else if (strstr(command,delete_command) != NULL) {
 			delete_an_apt(apt_list,strstr(command, delete_command) + sizeof(delete_command));
 			shift_command(short_term_history, command, index_history, &old_commands);
+			printf(">> ");
 			fgets(command, sizeof(command), stdin);
 			total_commands++;
 		}
@@ -116,5 +120,6 @@ int main()//TODO create empty lists
 
 		
 	}
+	printf("Good Bye!\n");
 	system("PAUSE");
 }

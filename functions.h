@@ -13,7 +13,8 @@
 #define COMMAND 512
 
 typedef struct apt {
-	int id;
+	short int id;
+	short int address_len;
 	char* address;
 	int price;
 	short int rooms;
@@ -47,9 +48,9 @@ typedef struct list
 }List;
 
 List load_commands_from_file();
-int upload_commands_to_file(List);
+void upload_commands_to_file(List);
 AptList load_apts_from_file();
-int  upload_apts_to_file(AptList);
+void  upload_apts_to_file(AptList);
 
 
 void get_an_apt(AptList* apt_list,char* command);
