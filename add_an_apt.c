@@ -42,9 +42,9 @@ void instert_apt_sorted(AptList* apt_list, AptNode* node) {//TODO: FIX
 			apt_list->tail = node;
 
 		}
-		else if (tmp->prev == NULL) { //insert at the beggining
+		else if (tmp->prev == NULL) { //insert at the beginning
 			tmp->prev = node;
-			node->next = tmp->prev;
+			node->next = tmp;
 			apt_list->head = node;
 		}
 		else { //insert at the middle
@@ -92,7 +92,7 @@ void fill_apt_from_str(Apt* apt, char* str) {
 		i++;
 	}
 	apt->entry_date.tm_year += 2000;
-	apt->entry_date.tm_year -= 1970;
+	apt->entry_date.tm_year -= 1900;
 
 
 }

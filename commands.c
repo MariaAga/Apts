@@ -2,30 +2,40 @@
 
 void shift_command(char *short_term_history[N], char* command, int* index_history, List* old_commands) {
 
-	*index_history = (*index_history + 1) % 8;
-	if (*index_history >= N) { //cut the oldest command from the array to the linked list and update the history array with the new command
-		insertDataToEndList(old_commands, short_term_history[0], strlen(short_term_history[0]));
+	*index_history = (*index_history + 1) % 9;
+	if (*index_history > N) { //cut the oldest command from the array to the linked list and update the history array with the new command
+		insertDataToEndList(old_commands, short_term_history[N-1], strlen(short_term_history[N-1]));
 		*index_history=*index_history-1;
 	}
 	if (*index_history > 1) {
 		for (int i = N - 1; i > 0; i--) { //shift the shrt history array left
-			memcpy(short_term_history[i], short_term_history[i - 1], COMMAND);
+			copy_string(short_term_history[i], COMMAND, short_term_history[i - 1]);
 		}
 
-		memcpy(short_term_history[0], command, COMMAND);
+		copy_string(short_term_history[0], COMMAND, command);
 	}
 }
 
-void get_n_command(int show_index, List old_commands, char command[][COMMAND])
+void copy_string(char* dest, int len, char* source) {
+	free(dest);
+	dest = (char*)malloc(sizeof(char)*len+1);
+	if (strlen(source)<len) {
+		strcpy_s(dest, len, source);
+	}
+
+}
+
+void get_n_command(int show_index, List old_commands, char** command)
 {
 	ListNode* node = old_commands.head;
-	show_index -= 7;
+	
 	while (show_index > 0 && node != NULL) {
 		show_index--;
 		node = node->next;
 	}
 	if (show_index == 0) {
-		strcpy_s(*command, COMMAND, node->data);
+		node->data = (char*)malloc(sizeof(char) * (COMMAND + 1));
+		copy_string(*command, COMMAND, node->data);
 	}
 	else {
 		printf("Error getting the %d command from old commands index\n", show_index);
@@ -34,8 +44,10 @@ void get_n_command(int show_index, List old_commands, char command[][COMMAND])
 }
 
 void filter_number_command(char* command, int* var, int command_len) {
-	command = command + command_len + 1;
-	number_from_string(command, var);
+	if (command != NULL) {
+		command = command + command_len + 1;
+		number_from_string(command, var);
+	}
 }
 
 void number_from_string(char* str, int* num) {
@@ -45,14 +57,14 @@ void number_from_string(char* str, int* num) {
 		while (str[i] == ' ') {
 			i++;
 		}
-		while (str[i] <= 9 && str[i] >= '0' && str[i] != '\0') {
+		while (str[i] <= '9' && str[i] >= '0' && str[i] != '\0') {
 			*num = *num * 10 + char_to_int(str[i]);
 			i++;
 		}
 	}
 }
 
-void edit_command(char command[][COMMAND], char prev_command[COMMAND]) {//!num^str1^str2 action
+void edit_command(char** command, char* prev_command) {//!num^str1^str2 action
 	char str1[COMMAND];
 	char str2[COMMAND];
 	char command_end[COMMAND];
@@ -63,8 +75,11 @@ void edit_command(char command[][COMMAND], char prev_command[COMMAND]) {//!num^s
 	strcpy_s(str2, COMMAND , (strstr(str1, "^")+1));
 	str2_len = strlen(str2);
 	str1_len = strlen(str1) - str2_len - 1;
-	strcpy_s(command_end, COMMAND , *command + str2_len + str1_len + 2);
+	str1[str1_len ] = '\0';
+	str2[str2_len-1] = '\0';
+
 	change_point = strstr(*command, str1);
+	strcpy_s(command_end, COMMAND,  change_point+str1_len);
 	for (int i = 0; i < str2_len; i++) {
 		change_point[i] = str2[i];
 	}

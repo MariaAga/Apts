@@ -101,7 +101,7 @@ void buy_an_apt(AptList* apt_list, char * command)
 	int id;
 	AptNode* node = apt_list->head;
 	AptNode* tmp;
-	filter_number_command(command, &id, sizeof("buy-an-apt"));
+	filter_number_command(command, &id, 0);
 	while (node != NULL && node->apt->id != id) {
 		node = node->next;
 	}
@@ -163,8 +163,8 @@ void insertDataToEndList(List* head, char* data,int size)
 		head->tail = result;
 	}
 	result->size = size;
-	result->data = (char*)malloc(sizeof(char)*size);
-	strcpy_s(result->data, sizeof(char)*size, data);
+	result->data = (char*)malloc(sizeof(char)*size+1);
+	strcpy_s(result->data, sizeof(char)*size+1, data);
 }
 
 

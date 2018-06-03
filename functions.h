@@ -62,7 +62,7 @@ void delete_an_apt(AptList* apt_list, char* command);
 void insertDataToEndList(List* head, char* data, int size);
 void freeList(List* lst);
 void shift_command(char *short_term_history[N], char* command, int* index_history, List* old_commands);
-void get_n_command(int show_index, List old_commands , char command [][COMMAND]);
+void get_n_command(int show_index, List old_commands , char **command );
 void edit_command(char command[][COMMAND], char prev_command[COMMAND]);
 
 void parse_command(char* command, int* max_price, int* min_num_room, int* max_num_room, struct tm* date);
@@ -83,4 +83,7 @@ void delete_recent_apts(AptList * apt_list, int show_days);
 
 void bits_to_file(FILE* file, Apt apt);
 void db_date_to_file(FILE* file, Apt apt);
+
+
+void copy_string(char* dest, int len, char* source);
 #endif
