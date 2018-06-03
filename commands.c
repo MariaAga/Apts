@@ -77,14 +77,18 @@ void edit_command(char** command, char* prev_command) {//!num^str1^str2 action
 	str1_len = strlen(str1) - str2_len - 1;
 	str1[str1_len ] = '\0';
 	str2[str2_len-1] = '\0';
-
 	change_point = strstr(*command, str1);
-	strcpy_s(command_end, COMMAND,  change_point+str1_len);
-	for (int i = 0; i < str2_len; i++) {
-		change_point[i] = str2[i];
+	while (change_point != NULL) {
+		strcpy_s(command_end, COMMAND, change_point + str1_len);
+		for (int i = 0; i < str2_len-1; i++) {
+			change_point[i] = str2[i];
+		}
+		change_point[str2_len] = '\0';
+		
+		change_point = strstr(command_end, str1);
+		strcat_s(*command, (change_point-command_end), command_end);
 	}
-	change_point[str2_len] = '\0';
-	strcat_s(*command, COMMAND-1, command_end);
+	
 }
 
 

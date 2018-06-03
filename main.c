@@ -108,7 +108,7 @@ int main()//TODO create empty lists
 			filter_number_command(strstr(command, "!"), &show_index, 0);
 			if (strstr(command, "^") != NULL) {// !num^str1^str2 action - run the num command and swap str1 with str2
 				copy_string(prev_command, COMMAND , command);
-				if (total_commands - show_index<N) { //last command is in the short_term_hisoty
+				if (total_commands - show_index<=N) { //last command is in the short_term_hisoty
 					copy_string(command, COMMAND , short_term_history[total_commands - show_index-1]);
 				}
 				else {//last command is in the long history
