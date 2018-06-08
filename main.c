@@ -32,7 +32,6 @@ int main()//TODO create empty lists
 		short_term_history[i] = (char*)malloc(sizeof(char) * (COMMAND+1) );
 	}
 	old_commands.head = old_commands.tail = NULL; //init the long term history
-	apt_list->head = apt_list->tail = NULL; //init the apts list
 	printf("Please enter one of the following commands:\n"
 	"add-an-apt, get-an-apt, buy-an-apt or delete-an-apt\n"
 	"For reconstruction commands, please enter :\n"
@@ -124,6 +123,10 @@ int main()//TODO create empty lists
 					get_n_command(show_index, old_commands, &command);
 				}
 			}
+		}
+		else {
+			printf("Wrong command");
+			fgets(command, COMMAND, stdin);
 		}
 
 		

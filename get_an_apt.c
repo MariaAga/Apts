@@ -57,7 +57,8 @@ void get_sorted_filtered_apt(AptList* apt_list, int max_price, int min_num_room,
 }
 
 void print_apt(AptNode node) {
-	printf("Apt details:\nCode : %d\nAddress : %s\nNumber of rooms : %d\n", node.apt->id,node.apt->address, node.apt->rooms);
+	printf("Apt details:\nCode : %d\nAddress : %s\nNumber of rooms: %d\n", node.apt->id,node.apt->address, node.apt->rooms);
+	printf("Price: %d \n", node.apt->price);
 	printf("Entry date : %d.%d.%d\n", node.apt->entry_date.tm_mday, node.apt->entry_date.tm_mon, (node.apt->entry_date.tm_year + 1900));
 	printf("Database entry date : %d.%d.%d\n", node.apt->db_entry_date.tm_mday, node.apt->db_entry_date.tm_mon, (node.apt->db_entry_date.tm_year + 1900));
 }
