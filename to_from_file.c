@@ -5,22 +5,27 @@ void upload_commands_to_file(List* commands, int total_commands,char *short_term
 	FILE* file;
 	int i;
 	fopen_s(&file, "command.txt", "w");
-	if (total_commands > 7) {
-		for (i = 0; i < 7; i++) {
-			fprintf(file, short_term_history[i]);
+	if (file != NULL) {
+		if (total_commands > 7) {
+			for (i = 0; i < 7; i++) {
+				fprintf(file, short_term_history[i]);
+			}
+			while (node != NULL) {
+				fprintf(file, node->data);
+				node = node->next;
+			}
+			free_old_commands(commands);
 		}
-		while (node != NULL) {
-			fprintf(file, node->data);
-			node = node->next;
+		else {
+			for (i = 0; i < total_commands - 1; i++) {
+				fprintf(file, short_term_history[i]);
+			}
 		}
-		free_old_commands(commands);
+		fclose(file);
 	}
 	else {
-		for (i = 0; i < total_commands-1; i++) {
-			fprintf(file, short_term_history[i]);
-		}
+		printf("error opening the file");
 	}
-	fclose(file);
 	free_commands(short_term_history);
 
 }
@@ -46,7 +51,9 @@ int load_commands_from_file(List* commands, char *short_term_history[N],int*show
 			}
 			total++;
 		}
+		fclose(file);
 	}
+	
 	*show_index = total;
 	free(command);
 	return total;
@@ -57,24 +64,28 @@ void upload_apts_to_file(AptList* apts) {
 	AptNode* node = apts->head;
 	FILE* file;
 	fopen_s(&file, "apt.bin", "wb");
-
-	while (node != NULL) {
-		fwrite(&node->apt->id, sizeof(short int), 1, file);
-		fwrite(&node->apt->address_len, sizeof(short int), 1, file);
-		fwrite(node->apt->address, sizeof(char), node->apt->address_len, file);
-		fwrite(&node->apt->price, sizeof(int), 1, file);
-		bits_to_file(file, *node->apt);
-		node = node->next;
+	if (file != NULL) {
+		while (node != NULL) {
+			fwrite(&node->apt->id, sizeof(short int), 1, file);
+			fwrite(&node->apt->address_len, sizeof(short int), 1, file);
+			fwrite(node->apt->address, sizeof(char), node->apt->address_len, file);
+			fwrite(&node->apt->price, sizeof(int), 1, file);
+			bits_to_file(file, *node->apt);
+			node = node->next;
+		}
+		fclose(file);
 	}
-
+	else {
+		printf("error opening the file");
+	}
 	free_apt_list(apts);
-	fclose(file);
+
 }
 
 
 AptList* load_apts_from_file()
 {
-	AptList* apts = (AptList*)malloc(sizeof(AptList));;
+	AptList* apts = (AptList*)malloc(sizeof(AptList));
 	AptNode* node=NULL;
 	AptNode* node_prev=NULL;
 	FILE* file;

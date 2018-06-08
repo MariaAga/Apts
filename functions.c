@@ -46,17 +46,6 @@ void delete_recent_apts(AptList * apt_list, int show_days)
 }
 
 
-void freeList(List* lst)
-{
-	ListNode* curr = lst->head, *next;
-
-	while (curr != NULL)
-	{
-		next = curr->next;
-		free(curr);
-		curr = next;
-	}
-}
 
 void insertDataToEndList(List* head, char* data,int size)
 {

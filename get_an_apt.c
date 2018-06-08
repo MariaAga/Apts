@@ -6,8 +6,9 @@ void get_an_apt(AptList* apt_list, char * command) //TODO: add -sr -s
 {
 	int max_price = -1, min_num_room = 0, max_num_room = -1,sort=1;
 	time_t raw_time = 0;
-	struct tm date; gmtime_s(&date, &raw_time);
+	struct tm date; gmtime_s(&date, &raw_time); date.tm_year = 0;
 	int show_days;
+	
 	if (strstr(command, "-Enter") != NULL) {
 		filter_number_command(strstr(command, "-Enter"), &show_days, strlen("-Enter"));
 		show_recent_apts(apt_list, show_days);
@@ -64,17 +65,9 @@ void print_apt(AptNode node) {
 }
 
 int date_filter(struct tm entry_date, struct tm date) {
+	if (date.tm_year == 0)
+		return 1;
 	time_t t1 = mktime(&entry_date);
 	time_t t2 = mktime(&date);
 	return ( difftime(t1, t2)<0);
-/*	if (entry_date.tm_year < date.tm_year)
-		return 1;
-	else if (entry_date.tm_year <= date.tm_year)
-		if (entry_date.tm_mon < date.tm_mon)
-			return 1;
-		else if (entry_date.tm_mon <= date.tm_mon)
-			if (entry_date.tm_mday < date.tm_mday)
-				return 1;
-	
-	return 0;*/
 }

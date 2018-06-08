@@ -100,6 +100,9 @@ int main()//TODO create empty lists
 				}
 				edit_command(&command,prev_command);
 			}
+			else if (command[1] == '!') {
+				copy_string(command, COMMAND, short_term_history[0]);
+			}
 			else { //command is !num - show the num command
 				if (total_commands - show_index<7) { //last command is in the short_term_hisoty
 					copy_string(command, COMMAND , short_term_history[total_commands - show_index]);
