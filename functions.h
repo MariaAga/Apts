@@ -1,7 +1,6 @@
 
 #ifndef HEADER_FILE
 #define HEADER_FILE
-
 #include <stdio.h>
 #include <string.h>
 #include <assert.h> 
@@ -11,6 +10,8 @@
 
 #define N 7
 #define COMMAND 512
+
+typedef unsigned char BYTE;
 
 typedef struct apt {
 	short int id;
@@ -49,8 +50,8 @@ typedef struct list
 
 List load_commands_from_file();
 void upload_commands_to_file(List);
-AptList load_apts_from_file();
-void  upload_apts_to_file(AptList);
+AptList* load_apts_from_file();
+void upload_apts_to_file(AptList* apts);
 
 
 void get_an_apt(AptList* apt_list,char* command);
@@ -63,7 +64,7 @@ void insertDataToEndList(List* head, char* data, int size);
 void freeList(List* lst);
 void shift_command(char *short_term_history[N], char* command, int* index_history, List* old_commands);
 void get_n_command(int show_index, List old_commands , char **command );
-void edit_command(char command[][COMMAND], char prev_command[COMMAND]);
+void edit_command(char** command, char* prev_command);
 
 void parse_command(char* command, int* max_price, int* min_num_room, int* max_num_room, struct tm* date);
 void filter_number_command(char*command, int* var, int command_len);
@@ -78,11 +79,13 @@ int char_to_int(char ch);
 void fill_apt_from_str(Apt* apt, char* str);
 void instert_apt_sorted(AptList* apt_list, AptNode* node);
 void free_apt_node(AptNode* node);
+void free_apt_list(AptList* apts);
 
 void delete_recent_apts(AptList * apt_list, int show_days);
 
 void bits_to_file(FILE* file, Apt apt);
 void db_date_to_file(FILE* file, Apt apt);
+void file_to_bits(FILE* file, Apt* apt);
 
 
 void copy_string(char* dest, int len, char* source);

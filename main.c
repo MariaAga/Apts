@@ -21,7 +21,7 @@ int main()//TODO create empty lists
 	char* command, *prev_command;
 	List old_commands;
 	ListNode* curr;
-	AptList apt_list;
+	AptList* apt_list = load_apts_from_file();
 	int show_index = 0;
 	int index_history=0,total_commands=1;
 	int i,j;
@@ -32,7 +32,7 @@ int main()//TODO create empty lists
 		short_term_history[i] = (char*)malloc(sizeof(char) * (COMMAND+1) );
 	}
 	old_commands.head = old_commands.tail = NULL; //init the long term history
-	apt_list.head = apt_list.tail = NULL; //init the apts list
+	apt_list->head = apt_list->tail = NULL; //init the apts list
 	printf("Please enter one of the following commands:\n"
 	"add-an-apt, get-an-apt, buy-an-apt or delete-an-apt\n"
 	"For reconstruction commands, please enter :\n"
@@ -40,31 +40,31 @@ int main()//TODO create empty lists
 	"To exit, enter exit.\n>> ");
 	fgets(command, COMMAND , stdin);
 	copy_string(short_term_history[0], COMMAND , command);
-	while (command != "exit") {
+	while (strcmp(command, "exit\n")!=0) {
 
 		if (strstr(command, get) != NULL) {
-			get_an_apt(&apt_list,strstr(command, get)+strlen(get));
+			get_an_apt(apt_list,strstr(command, get)+strlen(get));
 			shift_command(short_term_history, command, &index_history, &old_commands);
 			printf(">> ");
 			fgets(command, COMMAND , stdin);
 			total_commands++;
 		}
 		else if (strstr(command, add) != NULL) {
-			add_an_apt(&apt_list,strstr(command,add) + strlen(add));
+			add_an_apt(apt_list,strstr(command,add) + strlen(add));
 			shift_command(short_term_history, command, &index_history, &old_commands);
 			printf(">> ");
 			fgets(command, COMMAND , stdin);
 			total_commands++;
 		}
 		else if (strstr(command, buy) != NULL) {
-			buy_an_apt(&apt_list,strstr(command, buy) + strlen(buy));
+			buy_an_apt(apt_list,strstr(command, buy) + strlen(buy));
 			shift_command(short_term_history, command, &index_history, &old_commands);
 			printf(">> ");
 			fgets(command, COMMAND , stdin);
 			total_commands++;
 		}
 		else if (strstr(command,delete_command) != NULL) {
-			delete_an_apt(&apt_list,strstr(command, delete_command) + sizeof(delete_command));
+			delete_an_apt(apt_list,strstr(command, delete_command) + sizeof(delete_command));
 			shift_command(short_term_history, command, &index_history, &old_commands);
 			printf(">> ");
 			fgets(command, COMMAND , stdin);
@@ -129,7 +129,7 @@ int main()//TODO create empty lists
 		
 	}
 	printf("Good Bye!\n");
-
+	upload_apts_to_file(apt_list);
 	for (i = 0; i < N; i++) { // free the short term history
 		free(short_term_history[i]);
 	}

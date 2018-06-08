@@ -120,6 +120,7 @@
     <ClCompile Include="functions.c" />
     <ClCompile Include="get_an_apt.c" />
     <ClCompile Include="main.c" />
+    <ClCompile Include="to_from_file.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="functions.h" />

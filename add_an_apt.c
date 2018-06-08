@@ -23,7 +23,7 @@ void add_an_apt(AptList* apt_list, char * command) //TODO: ALWAYS ADD SORTED BY 
 
 }
 
-void instert_apt_sorted(AptList* apt_list, AptNode* node) {//TODO: FIX
+void instert_apt_sorted(AptList* apt_list, AptNode* node) {
 	AptNode* tmp;
 	node->next = NULL;
 	node->prev = NULL;
