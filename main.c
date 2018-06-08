@@ -125,7 +125,7 @@ int main()//TODO create empty lists
 			}
 		}
 		else {
-			printf("Wrong command");
+			printf("Wrong command \n>> ");
 			fgets(command, COMMAND, stdin);
 		}
 

@@ -86,7 +86,7 @@ void delete_recent_apts(AptList * apt_list, int show_days);
 void bits_to_file(FILE* file, Apt apt);
 void db_date_to_file(FILE* file, Apt apt);
 void file_to_bits(FILE* file, Apt* apt);
-
+void file_to_db_date(FILE* file, Apt* apt);
 
 void copy_string(char* dest, int len, char* source);
 #endif
