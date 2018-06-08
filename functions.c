@@ -96,3 +96,23 @@ void free_apt_list(AptList* apts) {
 	}
 	free(apts);
 }
+
+void show_history(List old_commands, char *short_term_history[N],int total) {
+	ListNode* curr;
+	int i = 0,j;
+	curr = old_commands.head;
+	total--;
+	while (curr != NULL) {
+		i++;
+		printf("%d: %s\n", i, curr->data);
+		curr = curr->next;
+		total--;
+	}
+	for (j = total - 1; j >= 0; j--) {
+		i++;
+		if (strlen(short_term_history[j]) > 0) {
+			printf("%d: %s\n", (i), short_term_history[j]);
+		}
+
+	}
+}

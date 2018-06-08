@@ -46,7 +46,7 @@ void get_sorted_filtered_apt(AptList* apt_list, int max_price, int min_num_room,
 	else
 		node = apt_list->tail;
 	while (node != NULL) {
-		if ((node->apt->price <= max_price || max_price < 0) && (node->apt->rooms >= min_num_room) && (node->apt->rooms <= max_num_room || max_num_room < 0)) {
+		if ((node->apt->price <= max_price || max_price < 0) && (node->apt->rooms >= min_num_room) && (node->apt->rooms <= max_num_room || max_num_room < 0) && date_filter(node->apt->entry_date,date)) {
 			print_apt(*node);
 		}
 		if (sort == 1)
@@ -61,4 +61,20 @@ void print_apt(AptNode node) {
 	printf("Price: %d \n", node.apt->price);
 	printf("Entry date : %d.%d.%d\n", node.apt->entry_date.tm_mday, node.apt->entry_date.tm_mon, (node.apt->entry_date.tm_year + 1900));
 	printf("Database entry date : %d.%d.%d\n", node.apt->db_entry_date.tm_mday, node.apt->db_entry_date.tm_mon, (node.apt->db_entry_date.tm_year + 1900));
+}
+
+int date_filter(struct tm entry_date, struct tm date) {
+	time_t t1 = mktime(&entry_date);
+	time_t t2 = mktime(&date);
+	return ( difftime(t1, t2)<0);
+/*	if (entry_date.tm_year < date.tm_year)
+		return 1;
+	else if (entry_date.tm_year <= date.tm_year)
+		if (entry_date.tm_mon < date.tm_mon)
+			return 1;
+		else if (entry_date.tm_mon <= date.tm_mon)
+			if (entry_date.tm_mday < date.tm_mday)
+				return 1;
+	
+	return 0;*/
 }

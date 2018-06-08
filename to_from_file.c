@@ -1,20 +1,62 @@
 #include "functions.h"
 
-void upload_commands_to_file(List commands) {
+void upload_commands_to_file(List* commands, int total_commands,char *short_term_history[N]){
+	ListNode* node = commands->head;
+	FILE* file;
+	int i;
+	fopen_s(&file, "command.txt", "w");
+	if (total_commands > 7) {
+		for (i = 0; i < 7; i++) {
+			fprintf(file, short_term_history[i]);
+		}
+		while (node != NULL) {
+			fprintf(file, node->data);
+			node = node->next;
+		}
+		free_old_commands(commands);
+	}
+	else {
+		for (i = 0; i < total_commands-1; i++) {
+			fprintf(file, short_term_history[i]);
+		}
+	}
+	fclose(file);
+	free_commands(short_term_history);
 
 }
 
-List load_commands_from_file()
-{
-	//return List();
+
+int load_commands_from_file(List* commands, char *short_term_history[N],int*show_index){
+	FILE* file;
+	int i, total = 0;
+	char* command = (char*)malloc(sizeof(char) * (COMMAND + 1));
+	fopen_s(&file, "command.txt", "r");
+	commands->head = commands->tail = NULL;
+	for (i = 0; i < N; i++) { // init the short term history
+		short_term_history[i] = (char*)malloc(sizeof(char) * (COMMAND + 1));
+	}
+	if (file != NULL) {
+		while (fgets(command, COMMAND + 1, file)) {
+			;
+			if (total < 7) {
+				strcpy_s(short_term_history[total], (COMMAND + 1),command);
+			}
+			else {
+				insertDataToEndList(commands, command, strlen(command));
+			}
+			total++;
+		}
+	}
+	*show_index = total;
+	free(command);
+	return total;
 }
 
 
 void upload_apts_to_file(AptList* apts) {
 	AptNode* node = apts->head;
 	FILE* file;
-	errno_t err;
-	err = fopen_s(&file, "apt.bin", "wb");
+	fopen_s(&file, "apt.bin", "wb");
 
 	while (node != NULL) {
 		fwrite(&node->apt->id, sizeof(short int), 1, file);

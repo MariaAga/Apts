@@ -7,7 +7,7 @@ void shift_command(char *short_term_history[N], char* command, int* index_histor
 		insertDataToEndList(old_commands, short_term_history[N-1], strlen(short_term_history[N-1]));
 		*index_history=*index_history-1;
 	}
-	if (*index_history > 1) {
+	if (*index_history > 0) {
 		for (int i = N - 1; i > 0; i--) { //shift the shrt history array left
 			copy_string(short_term_history[i], COMMAND, short_term_history[i - 1]);
 		}
@@ -70,7 +70,7 @@ void edit_command(char** command, char* prev_command) {//!num^str1^str2 action
 	char command_end[COMMAND];
 	char* change_point;
 	int command_len = strlen(*command), prev_command_len = strlen(prev_command);
-	int str1_len = 0, str2_len = 0;
+	int str1_len = 0, str2_len = 0,end_len;
 	strcpy_s(str1, COMMAND , (strstr(prev_command, "^")+1));
 	strcpy_s(str2, COMMAND , (strstr(str1, "^")+1));
 	str2_len = strlen(str2);
@@ -83,10 +83,10 @@ void edit_command(char** command, char* prev_command) {//!num^str1^str2 action
 		for (int i = 0; i < str2_len-1; i++) {
 			change_point[i] = str2[i];
 		}
-		change_point[str2_len] = '\0';
-		
-		change_point = strstr(command_end, str1);
-		strcat_s(*command, (change_point-command_end), command_end);
+		change_point[str2_len-1] = '\0';
+		end_len = strlen(command_end);
+		strcat_s(*command, COMMAND, command_end);
+		change_point = strstr(*command+(strlen(*command)-end_len), str1);
 	}
 	
 }
@@ -107,7 +107,29 @@ void filter_date_command(char* command, struct tm* date, int command_len) {
 		date->tm_mday = date->tm_mon = date->tm_year = 0;
 		date->tm_mday = char_to_int(command[0]) * 10 + char_to_int(command[1]);
 		date->tm_mon = char_to_int(command[2]) * 10 + char_to_int(command[3]);
-		date->tm_year = char_to_int(command[4]) * 100 + char_to_int(command[5]) * 10 + char_to_int(command[3]) - 1900;
+		//if (command[6] != '\0') {
+		//	date->tm_year = char_to_int(command[4]) * 100 + char_to_int(command[5]) * 10 + char_to_int(command[3]) - 1900;
+		//}
+		date->tm_year = char_to_int(command[4]) * 1000 + char_to_int(command[5]) * 100 + char_to_int(command[6]) * 10 + char_to_int(command[7]) - 1900;
 	}
+}
+
+void free_commands(char *short_term_history[N]) {
+	for (int i = 0; i < N; i++) {
+		free(short_term_history[i]);
+	}
+
+}
+
+void free_old_commands(List* commands) {
+	ListNode* node = commands->head;
+	ListNode* node_next = commands->head;
+	while (node != NULL) {
+		node_next = node->next;
+		free(node->data);
+		free(node);
+		node = node_next;
+	}
+	free(commands);
 }
 

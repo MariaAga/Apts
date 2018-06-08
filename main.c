@@ -20,25 +20,23 @@ int main()//TODO create empty lists
 	char* short_term_history[N];
 	char* command, *prev_command;
 	List old_commands;
-	ListNode* curr;
+
 	AptList* apt_list = load_apts_from_file();
 	int show_index = 0;
-	int index_history=0,total_commands=1;
-	int i,j;
+	int index_history = 0, total_commands;	
+	int i;
 	char* add = "add-an-apt"; char* get = "get-an-apt"; char* buy = "buy-an-apt"; char* delete_command = "delete-an-apt";
 	command = (char*)malloc(sizeof(char) * (COMMAND + 1));
 	prev_command = (char*)malloc(sizeof(char) * (COMMAND + 1));
-	for (i = 0; i < N; i++) { // init the short term history
-		short_term_history[i] = (char*)malloc(sizeof(char) * (COMMAND+1) );
-	}
-	old_commands.head = old_commands.tail = NULL; //init the long term history
+
+	total_commands = load_commands_from_file(&old_commands, short_term_history,&show_index)+1;
 	printf("Please enter one of the following commands:\n"
 	"add-an-apt, get-an-apt, buy-an-apt or delete-an-apt\n"
 	"For reconstruction commands, please enter :\n"
 	"!!, !num, history, short_history or !num^str1^str2\n"
 	"To exit, enter exit.\n>> ");
 	fgets(command, COMMAND , stdin);
-	copy_string(short_term_history[0], COMMAND , command);
+	//copy_string(short_term_history[show_index], COMMAND , command);
 	while (strcmp(command, "exit\n")!=0) {
 
 		if (strstr(command, get) != NULL) {
@@ -75,20 +73,7 @@ int main()//TODO create empty lists
 			copy_string(command, COMMAND , short_term_history[0]);
 		}
 		else if (strcmp(command,"history\n")==0) {// show all short_term_history and all old_commands
-			i = 0;
-			curr = old_commands.head;
-			while (curr != NULL) {
-				i++;
-				printf("%d: %s\n", i, curr->data);
-				curr = curr->next;
-			}
-			for (j = N-1; j >= 0; j--) {
-				i++;
-				if (strlen(short_term_history[j]) > 0) {
-					printf("%d: %s\n", (i), short_term_history[j]);
-				}
-
-			}
+			show_history(old_commands, short_term_history, total_commands);
 			printf(">> ");
 			fgets(command, COMMAND, stdin);
 
@@ -133,8 +118,8 @@ int main()//TODO create empty lists
 	}
 	printf("Good Bye!\n");
 	upload_apts_to_file(apt_list);
-	for (i = 0; i < N; i++) { // free the short term history
-		free(short_term_history[i]);
-	}
+	upload_commands_to_file(&old_commands, total_commands, short_term_history);
+	free(command);
+	free(prev_command);
 	system("PAUSE");
 }

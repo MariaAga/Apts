@@ -36,7 +36,7 @@ void instert_apt_sorted(AptList* apt_list, AptNode* node) {
 		while (tmp != NULL && tmp->apt->price > node->apt->price) {
 			tmp = tmp->next;
 		}
-		if (tmp == NULL) { //insert at the end
+		if (tmp == NULL || tmp->next==NULL) { //insert at the end
 			apt_list->tail->next = node;
 			node->prev = apt_list->tail;
 			apt_list->tail = node;
@@ -65,6 +65,7 @@ void fill_apt_from_str(Apt* apt, char* str) {
 	time_t curtime;
 	curtime = time(NULL);
 	localtime_s(&apt->db_entry_date, &curtime);
+	localtime_s(&apt->entry_date, &curtime);
 	apt->price = apt->rooms = apt->entry_date.tm_mday = apt->entry_date.tm_mon = apt->entry_date.tm_year = 0;
 	while (str[i] == ' ') { i++; }
 	while (str[i] <= '9' && str[i] >= '0' && str[i] != '\0') {
@@ -93,6 +94,6 @@ void fill_apt_from_str(Apt* apt, char* str) {
 	}
 	apt->entry_date.tm_year += 2000;
 	apt->entry_date.tm_year -= 1900;
-
+	
 
 }

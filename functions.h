@@ -48,8 +48,8 @@ typedef struct list
 	ListNode* tail;
 }List;
 
-List load_commands_from_file();
-void upload_commands_to_file(List);
+int load_commands_from_file(List* commands, char *short_term_history[N], int*show_index);
+void upload_commands_to_file(List* commands, int total_commands, char *short_term_history[N]);
 AptList* load_apts_from_file();
 void upload_apts_to_file(AptList* apts);
 
@@ -65,6 +65,10 @@ void freeList(List* lst);
 void shift_command(char *short_term_history[N], char* command, int* index_history, List* old_commands);
 void get_n_command(int show_index, List old_commands , char **command );
 void edit_command(char** command, char* prev_command);
+void show_history(List old_commands, char *short_term_history[N], int total);
+void free_commands(char *short_term_history[N]);
+void free_old_commands(List* commands);
+
 
 void parse_command(char* command, int* max_price, int* min_num_room, int* max_num_room, struct tm* date);
 void filter_number_command(char*command, int* var, int command_len);
@@ -72,6 +76,7 @@ void filter_date_command(char* command, struct tm* date, int command_len);
 void show_recent_apts(AptList* apt_list , int show_days);
 void get_sorted_filtered_apt(AptList* apt_list, int max_price, int min_num_room, int max_num_room, struct tm date,int sort);
 void print_apt(AptNode node);
+int date_filter(struct tm entry_date, struct tm date);
 
 void number_from_string(char* str, int* num);
 int char_to_int(char ch);
@@ -89,4 +94,5 @@ void file_to_bits(FILE* file, Apt* apt);
 void file_to_db_date(FILE* file, Apt* apt);
 
 void copy_string(char* dest, int len, char* source);
+
 #endif
